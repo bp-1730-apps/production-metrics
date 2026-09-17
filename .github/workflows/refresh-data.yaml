@@ -2,30 +2,43 @@ name: Refresh L2L trending data
 
 on:
   schedule:
+    # Every 30 minutes. GitHub may delay scheduled runs during high load,
+    # and disables schedules automatically on repos with no other activity
+    # for 60 days -- use the "Run workflow" button below if a run seems
+    # overdue.
     - cron: "*/30 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
 
 permissions:
-  contents: write
+  contents: write   # needed to commit the refreshed data/ files back
 
 concurrency:
   group: refresh-data
-  cancel-in-progress: false
+  cancel-in-progress: false   # never cancel a run that might be mid-commit
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
+
       - name: Fetch fresh data from L2L
         env:
           L2L_API_KEY: ${{ secrets.L2L_API_KEY }}
+          # Optional overrides -- only take effect if you add repository
+          # secrets of these names (Settings -> Secrets and variables ->
+          # Actions). Leave them unset to keep backend/config.py's defaults.
+          L2L_SITE_NUMBER: ${{ secrets.L2L_SITE_NUMBER }}
+          L2L_BASE_URL: ${{ secrets.L2L_BASE_URL }}
         run: python3 scripts/refresh_data.py
+
       - name: Commit updated data files
         run: |
           git config user.name "github-actions[bot]"
