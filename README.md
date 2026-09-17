@@ -26,10 +26,13 @@ from inside `backend/`. `main.py` works either way now, but running it as
 app laid out as a package.)
 
 Then open `dashboard.html` in a browser (double-click it, or serve it with
-any static file server). It talks to `http://localhost:8000` by default --
-change `CONFIG.API_BASE` near the top of the `<script>` block in
-`dashboard.html` if you run the backend somewhere else (e.g. a server on
-the plant network instead of your own machine).
+any static file server). It talks to `http://localhost:8000` by default.
+If your backend is somewhere else, you don't need to edit the file: click
+the &#9881; (settings) button in the top bar and paste the real address --
+it's remembered on that browser from then on. (You can also permanently
+change the default for everyone by editing `DEFAULT_API_BASE` near the top
+of the `<script>` block, or hand someone a link like
+`dashboard.html?api=https://your-backend-url` to set it for them automatically.)
 
 Run the tests any time you change the backend:
 
@@ -38,11 +41,13 @@ pip install pytest anyio httpx
 pytest backend/test_api.py -v
 ```
 
-## Pushing to GitHub
+## Deploying so it works for everyone (not just your machine)
 
-A `.gitignore` is included (it excludes `.env`, `__pycache__/`, `.pytest_cache/`).
-`backend/.env` was never generated in this download, so there's nothing to
-accidentally commit -- just don't `git add -f` it later.
+Right now, whoever runs `uvicorn` is the only person who can use the
+dashboard -- it's only reachable from that machine. To make it work for
+everyone, two things need to each live somewhere that's always on:
+
+**1. Put the code on GitHub** (you'll point both of the next two steps at it):
 
 ```bash
 cd l2l-trending-dashboard
@@ -55,16 +60,42 @@ git branch -M main
 git push -u origin main
 ```
 
-Two things GitHub itself does *not* do for you, worth remembering after you push:
+`.env` is excluded by `.gitignore` and was never generated in this
+download, so there's nothing to accidentally leak here -- just never
+`git add -f` it later.
 
-- It doesn't run the backend. Something (your machine, a plant-network
-  server, a host like Railway/Render/Fly.io) still has to run
-  `uvicorn backend.main:app`.
-- It doesn't change `CONFIG.API_BASE` in `dashboard.html`, which is
-  hardcoded to `http://localhost:8000`. Whoever opens the dashboard needs
-  that value to point at wherever the backend is actually reachable from
-  them -- update it (and `CORS_ALLOW_ORIGINS` in `.env`) if that's not
-  localhost.
+**2. Deploy the backend somewhere that stays running.** A `render.yaml` is
+included so this is close to one-click on [Render](https://render.com)
+(free tier): New -> Blueprint -> pick this GitHub repo -> Render reads
+`render.yaml` and asks you to paste in `L2L_API_KEY` (kept as a secret,
+never committed). When it finishes you'll have a permanent URL like
+`https://l2l-trending-api.onrender.com`. (A `Procfile` is also included if
+you'd rather use Railway or another buildpack-based host instead.)
+
+Free-tier note: Render's free web services spin down after periods of
+inactivity and take ~30-60 seconds to wake back up on the next request --
+fine for an internal tool, worth knowing so the first load of the day
+isn't mistaken for it being broken. Paid tiers avoid that.
+
+**3. Host `dashboard.html` somewhere everyone can open it.** Easiest
+option since the code's already on GitHub: repo Settings -> Pages ->
+Deploy from a branch -> `main` / `(root)`. You'll get a URL like
+`https://<you>.github.io/<repo>/dashboard.html`.
+
+**4. Point the dashboard at the deployed backend.** Edit `DEFAULT_API_BASE`
+near the top of `dashboard.html`'s `<script>` block to the Render URL from
+step 2, commit, and push -- GitHub Pages picks it up automatically. Now
+anyone who opens the Pages URL gets a working dashboard with no setup on
+their end.
+
+**5. Tighten CORS.** In Render's environment variables, set
+`CORS_ALLOW_ORIGINS` to your actual GitHub Pages origin (e.g.
+`https://<you>.github.io`) instead of leaving it at `*`, so the API only
+answers requests from your dashboard.
+
+After that, GitHub involvement is done -- it hosted the code, Render runs
+the backend continuously, and GitHub Pages serves the page. Nothing about
+this needs a terminal open on anyone's machine anymore.
 
 ## API
 

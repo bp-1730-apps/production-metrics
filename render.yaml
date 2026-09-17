@@ -1,0 +1,27 @@
+# Render.com "Blueprint" -- lets you deploy the backend with one click
+# instead of configuring build/start commands by hand.
+#
+# How to use: push this repo to GitHub, then on render.com choose
+# "New +" -> "Blueprint", point it at this repo, and Render reads this
+# file automatically. You'll be prompted to fill in L2L_API_KEY (marked
+# sync: false below so it's never stored in the repo itself).
+services:
+  - type: web
+    name: l2l-trending-api
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: L2L_API_KEY
+        sync: false
+      - key: L2L_SITE_NUMBER
+        value: "2"
+      - key: L2L_BASE_URL
+        value: "https://lakeviewfarms.leading2lean.com/api/1.0"
+      - key: CORS_ALLOW_ORIGINS
+        value: "*"
+      - key: CACHE_TTL_CURRENT_SECONDS
+        value: "120"
+      - key: CACHE_TTL_HISTORICAL_SECONDS
+        value: "21600"
