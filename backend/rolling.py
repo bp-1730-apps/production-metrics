@@ -77,10 +77,24 @@ async def update_rolling_series(
 
     async def resolve_line(display_code: str, l2l_code: str):
         existing_rows = _extract_existing(existing, display_code)
+
+        def _needs_fetch(p: date) -> bool:
+            iso = p.isoformat()
+            if iso not in existing_rows or p in tail_set:
+                return True
+            # A period saved with no metrics means every prior fetch attempt
+            # for it failed (or L2L genuinely had nothing for that
+            # line/period). Keep retrying it on every run rather than
+            # freezing it as permanently empty -- once the real cause is
+            # fixed (bad linecode, wrong site, a transient L2L outage,
+            # etc.) this is what lets old periods heal without anyone
+            # having to delete data/*.json and force a full refetch.
+            return not existing_rows[iso].get("metrics")
+
         to_fetch = {
             p: trending._fetch_one_period(l2l_code, p, granularity)
             for p in periods
-            if p.isoformat() not in existing_rows or p in tail_set
+            if _needs_fetch(p)
         }
 
         fetched = {}
