@@ -106,11 +106,15 @@ async def weekly_summary(day: date, linecode: str) -> list[dict]:
         return cached
 
     path = "reporting/production/weekly_summary_data_by_line"
-    period_end_exclusive = day + timedelta(days=7)
+    # Per L2L's API docs, this endpoint takes a single "date" (any date
+    # falling within the target production week) -- NOT a start/end range.
+    # That's different from the daily endpoint just below, which does
+    # require start/end. Easy to conflate the two; the docs spell out both
+    # explicitly under "Reporting Method: Production: Weekly/Daily Summary
+    # Data by Line".
     params = {
         "site": config.L2L_SITE_NUMBER,
-        "start": day.strftime("%Y-%m-%d %H:%M"),
-        "end": period_end_exclusive.strftime("%Y-%m-%d %H:%M"),
+        "date": day.strftime("%Y-%m-%d %H:%M"),
         "linecode": linecode,
     }
     reply = await get_l2l_data(path, params)

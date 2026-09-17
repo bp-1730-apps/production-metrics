@@ -2,7 +2,7 @@
 
 ## What's here
 
-- `dashboard.html` -- a single-file, dependency-free dashboard. By
+- `index.html` -- a single-file, dependency-free dashboard. By
   default it reads the static `data/*.json` files sitting next to it --
   no backend needs to be running anywhere for that.
 - `data/` -- generated, not hand-written. `scripts/refresh_data.py`
@@ -51,14 +51,42 @@
    a branch** -> branch `main`, folder `/ (root)`. Save, wait about a
    minute for the URL to appear.
 
-5. **Open the Pages URL** + `/dashboard.html`, e.g.
-   `https://<you>.github.io/<repo>/dashboard.html`. That's it -- it reads
-   `data/` directly from the same site, nothing to configure.
+5. **Open the Pages URL**, e.g. `https://<you>.github.io/<repo>/` --
+   because the file is named `index.html`, GitHub Pages serves it at that
+   root URL automatically, no filename needed. It reads `data/` directly
+   from the same site, nothing to configure.
 
 From here, the workflow keeps `data/` refreshed automatically every 30
 minutes on its own. If the dashboard ever looks stale, check the
 **Actions** tab for failed runs before assuming something's broken in the
 dashboard itself.
+
+## Troubleshooting: "No lines found" / every line shows identical numbers
+
+Both mean the same underlying thing: `backend/config.py`'s `L2L_SITE_NUMBER`
+and/or `LINECODE_DICT` values don't match real records in your L2L account.
+"No lines found" is L2L's hard error when a *required* line filter matches
+nothing (the weekly endpoint); identical values across every line is what
+happens on the daily endpoint instead, since its line filter is optional --
+an unmatched value is silently ignored rather than rejected, so it quietly
+falls back to unfiltered, plant-wide totals for every "line" you ask for.
+
+Don't guess new values by hand -- ask L2L's own API which ones are real:
+
+```bash
+cd l2l-trending-dashboard
+export L2L_API_KEY=your-real-key
+python3 scripts/discover_lines.py
+```
+
+This prints every Site record your key can see (its real `site` code --
+that's what `L2L_SITE_NUMBER` should be) and every Line record (its real
+`code` field -- that's what `LINECODE_DICT`'s values should be), straight
+from L2L's `/sites/` and `/lines/` master-data endpoints. Match the site
+whose description looks like Plant 1730 / Buena Park, then match its six
+lines by description to BP-LINE1..6, and update `backend/config.py`
+accordingly (or set the `L2L_SITE_NUMBER` GitHub Actions secret if only the
+site number was wrong).
 
 ## Local development
 
@@ -69,7 +97,7 @@ pip install -r backend/requirements.txt
 export L2L_API_KEY=your-real-key
 python3 scripts/refresh_data.py      # writes data/*.json locally
 python3 -m http.server 8000          # serve this folder
-# open http://localhost:8000/dashboard.html
+# open http://localhost:8000/index.html
 ```
 
 Run the tests any time you touch `backend/`:
@@ -92,12 +120,12 @@ here and still works:
   inactivity and takes ~30-60s to wake up on the first request.
 
 Then open the dashboard with `?live=<backend-url>` appended, e.g.
-`dashboard.html?live=https://your-backend.onrender.com`. This is a
+`index.html?live=https://your-backend.onrender.com`. This is a
 per-visit override (not a saved setting), meant for testing one backend
 against the dashboard -- it does not change what anyone else sees when
 they open the plain URL. If you want live mode to be the default for
 everyone, that's a small code change (swap which branch `refresh()` takes
-in `dashboard.html`) -- ask if you want that instead of the static setup.
+in `index.html`) -- ask if you want that instead of the static setup.
 
 ## Why a 30-minute schedule doesn't hammer L2L's API
 
@@ -113,7 +141,7 @@ re-run costs about 30 calls total instead of 900. `scripts/refresh_data.py`
 controls the window size (`DAY_WINDOW_DAYS`, `WEEK_WINDOW_DAYS`) and tail
 length (`DAY_TAIL_PERIODS`, `WEEK_TAIL_PERIODS`) if you want to tune either.
 
-## Data files (what `dashboard.html` actually reads)
+## Data files (what `index.html` actually reads)
 
 - `data/lines.json` -- the configured line codes (BP-LINE1..6).
 - `data/metrics-day.json`, `data/metrics-week.json` -- the metric

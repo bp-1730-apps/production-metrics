@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Pulls fresh data from L2L and writes it out as the static JSON files
-dashboard.html reads directly. Run on a schedule by
+index.html reads directly. Run on a schedule by
 .github/workflows/refresh-data.yml -- no live backend needs to be running
 anywhere once these files are committed and served (e.g. by GitHub Pages).
 
