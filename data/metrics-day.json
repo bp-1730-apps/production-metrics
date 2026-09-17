@@ -1,0 +1,382 @@
+[
+  {
+    "id": "changeover_duration",
+    "label": "Changeover Duration",
+    "category": "Downtime",
+    "unit": "minutes",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day"
+    ]
+  },
+  {
+    "id": "changeover_actual",
+    "label": "Changeovers",
+    "category": "Downtime",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day"
+    ]
+  },
+  {
+    "id": "downtime_minutes",
+    "label": "Downtime",
+    "category": "Downtime",
+    "unit": "minutes",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "nonproduction_minutes",
+    "label": "Non-Production Time",
+    "category": "Downtime",
+    "unit": "minutes",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day"
+    ]
+  },
+  {
+    "id": "planned_production_minutes",
+    "label": "Planned Production Time",
+    "category": "Downtime",
+    "unit": "minutes",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "earned_hours",
+    "label": "Earned Hours",
+    "category": "Labor",
+    "unit": "hours",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "labor_efficiency",
+    "label": "Labor Efficiency",
+    "category": "Labor",
+    "unit": "percent",
+    "decimals": 0,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "lhpu",
+    "label": "Labor Hours Per Unit",
+    "category": "Labor",
+    "unit": "number",
+    "decimals": 3,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "lmpu",
+    "label": "Labor Minutes Per Unit",
+    "category": "Labor",
+    "unit": "number",
+    "decimals": 2,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "operator_count",
+    "label": "Operator Count",
+    "category": "Labor",
+    "unit": "number",
+    "decimals": 1,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "plmpu",
+    "label": "Planned Labor Minutes Per Unit",
+    "category": "Labor",
+    "unit": "number",
+    "decimals": 2,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "takt_time",
+    "label": "Takt Time",
+    "category": "Labor",
+    "unit": "number",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day"
+    ]
+  },
+  {
+    "id": "operational_availability",
+    "label": "Availability",
+    "category": "Performance",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "oee",
+    "label": "OEE",
+    "category": "Performance",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "ppp",
+    "label": "Parts Per Pitch",
+    "category": "Performance",
+    "unit": "number",
+    "decimals": 2,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "peff",
+    "label": "Performance Efficiency",
+    "category": "Performance",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "run_rate",
+    "label": "Run Rate",
+    "category": "Performance",
+    "unit": "rate",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "teff",
+    "label": "Target Efficiency",
+    "category": "Performance",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "pitch_count",
+    "label": "Pitch Count",
+    "category": "Pitch",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "pitch_pace",
+    "label": "Pitch Pace",
+    "category": "Pitch",
+    "unit": "number",
+    "decimals": 1,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "actual",
+    "label": "Actual Production",
+    "category": "Production",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "demand",
+    "label": "Demand",
+    "category": "Production",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "npm",
+    "label": "Net Parts per Minute",
+    "category": "Production",
+    "unit": "rate",
+    "decimals": 0,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "pph",
+    "label": "Parts Per Hour",
+    "category": "Production",
+    "unit": "rate",
+    "decimals": 0,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "ppmh",
+    "label": "Parts Per Man-Hour",
+    "category": "Production",
+    "unit": "rate",
+    "decimals": 0,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "past_due",
+    "label": "Past Due",
+    "category": "Production",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "theoretical_parts",
+    "label": "Theoretical Parts",
+    "category": "Production",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "theoretical_parts_production_time",
+    "label": "Theoretical Parts (Run Time)",
+    "category": "Production",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": null,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "tpu",
+    "label": "Time Per Unit",
+    "category": "Production",
+    "unit": "number",
+    "decimals": 3,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "scrap",
+    "label": "Scrap",
+    "category": "Quality",
+    "unit": "count",
+    "decimals": 0,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "scrap_percent",
+    "label": "Scrap %",
+    "category": "Quality",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": false,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  },
+  {
+    "id": "yield",
+    "label": "Yield",
+    "category": "Quality",
+    "unit": "percent",
+    "decimals": 1,
+    "higher_is_better": true,
+    "available_in": [
+      "day",
+      "week"
+    ]
+  }
+]

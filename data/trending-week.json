@@ -1,0 +1,1873 @@
+{
+  "granularity": "week",
+  "start_date": "2026-02-19",
+  "end_date": "2026-09-17",
+  "lines": [
+    "BP-LINE1",
+    "BP-LINE2",
+    "BP-LINE3",
+    "BP-LINE4",
+    "BP-LINE5",
+    "BP-LINE6"
+  ],
+  "series": {
+    "BP-LINE1": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "BP-LINE2": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "BP-LINE3": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "BP-LINE4": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "BP-LINE5": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "BP-LINE6": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ],
+    "ALL_LINES": [
+      {
+        "period_start": "2026-02-19",
+        "period_end": "2026-02-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-02-26",
+        "period_end": "2026-02-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-05",
+        "period_end": "2026-03-05",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-12",
+        "period_end": "2026-03-12",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-19",
+        "period_end": "2026-03-19",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-03-26",
+        "period_end": "2026-03-26",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-02",
+        "period_end": "2026-04-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-09",
+        "period_end": "2026-04-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-16",
+        "period_end": "2026-04-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-23",
+        "period_end": "2026-04-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-04-30",
+        "period_end": "2026-04-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-07",
+        "period_end": "2026-05-07",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-14",
+        "period_end": "2026-05-14",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-21",
+        "period_end": "2026-05-21",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-05-28",
+        "period_end": "2026-05-28",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-04",
+        "period_end": "2026-06-04",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-11",
+        "period_end": "2026-06-11",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-18",
+        "period_end": "2026-06-18",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-06-25",
+        "period_end": "2026-06-25",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-02",
+        "period_end": "2026-07-02",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-09",
+        "period_end": "2026-07-09",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-16",
+        "period_end": "2026-07-16",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-23",
+        "period_end": "2026-07-23",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-07-30",
+        "period_end": "2026-07-30",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-06",
+        "period_end": "2026-08-06",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-13",
+        "period_end": "2026-08-13",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-20",
+        "period_end": "2026-08-20",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-08-27",
+        "period_end": "2026-08-27",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-03",
+        "period_end": "2026-09-03",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-10",
+        "period_end": "2026-09-10",
+        "metrics": {}
+      },
+      {
+        "period_start": "2026-09-17",
+        "period_end": "2026-09-17",
+        "metrics": {}
+      }
+    ]
+  },
+  "errors": {
+    "BP-LINE1": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ],
+    "BP-LINE2": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ],
+    "BP-LINE3": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ],
+    "BP-LINE4": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ],
+    "BP-LINE5": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ],
+    "BP-LINE6": [
+      {
+        "period_start": "2026-02-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-02-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-05",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-12",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-19",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-03-26",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-04-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-07",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-14",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-21",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-05-28",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-04",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-11",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-18",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-06-25",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-02",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-09",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-16",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-23",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-07-30",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-06",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-13",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-20",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-08-27",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-03",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-10",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      },
+      {
+        "period_start": "2026-09-17",
+        "error": "No lines found. Please ensure your line identifier(s) are valid."
+      }
+    ]
+  },
+  "generated_at": "2026-09-17T18:47:54.004199+00:00"
+}
