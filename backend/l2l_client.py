@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 import httpx
@@ -106,9 +106,11 @@ async def weekly_summary(day: date, linecode: str) -> list[dict]:
         return cached
 
     path = "reporting/production/weekly_summary_data_by_line"
+    period_end_exclusive = day + timedelta(days=7)
     params = {
         "site": config.L2L_SITE_NUMBER,
-        "date": day.strftime("%Y-%m-%d %H:%M"),
+        "start": day.strftime("%Y-%m-%d %H:%M"),
+        "end": period_end_exclusive.strftime("%Y-%m-%d %H:%M"),
         "linecode": linecode,
     }
     reply = await get_l2l_data(path, params)
@@ -143,9 +145,11 @@ async def daily_summary(day: date, linecode: str) -> list[dict]:
         return cached
 
     path = "reporting/production/daily_summary_data_by_line"
+    period_end_exclusive = day + timedelta(days=1)
     params = {
         "site": config.L2L_SITE_NUMBER,
-        "date": day.strftime("%Y-%m-%d %H:%M"),
+        "start": day.strftime("%Y-%m-%d %H:%M"),
+        "end": period_end_exclusive.strftime("%Y-%m-%d %H:%M"),
         "linecode": linecode,
     }
     reply = await get_l2l_data(path, params)
