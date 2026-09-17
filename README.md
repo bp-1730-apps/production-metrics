@@ -2,112 +2,134 @@
 
 ## What's here
 
-- `backend/` -- a FastAPI service that wraps L2L's weekly/daily reporting
-  endpoints, normalizes their field names into one metric catalog, and
-  exposes it as a clean trending API.
-- `dashboard.html` -- a single-file, dependency-free dashboard (no CDN,
-  no build step) that consumes that API.
-- `backend/test_api.py` -- tests against the two sample payloads you
-  provided, with no real network calls.
+- `dashboard.html` -- a single-file, dependency-free dashboard. By
+  default it reads the static `data/*.json` files sitting next to it --
+  no backend needs to be running anywhere for that.
+- `data/` -- generated, not hand-written. `scripts/refresh_data.py`
+  writes it; a scheduled GitHub Action runs that script every 30 minutes
+  and commits the result. This is what makes the dashboard "just work"
+  for anyone who opens it, with no setup on their end. It won't exist
+  until the first refresh runs (see setup below).
+- `backend/` -- the L2L client, field-normalization, and aggregation
+  logic. Used two ways: `scripts/refresh_data.py` imports it directly to
+  build `data/`, and it can optionally also run as a live FastAPI service
+  (`uvicorn backend.main:app`) for local development.
+- `.github/workflows/refresh-data.yml` -- the scheduled job that keeps
+  `data/` fresh.
+- `render.yaml` / `Procfile` -- only needed for the *optional* live-backend
+  path described near the bottom; skip them for the default setup.
+- `backend/test_api.py`, `backend/test_rolling.py` -- tests against the
+  sample payloads you provided and the incremental refresh logic, no real
+  network calls.
 
-## Running it
+## Setup (GitHub-only, no server to run)
+
+1. **Push this to GitHub**, if you haven't already:
+
+   ```bash
+   cd l2l-trending-dashboard
+   git init
+   git add .
+   git status              # confirm .env is NOT listed -- only .env.example should be
+   git commit -m "Initial commit: L2L trending dashboard"
+   git remote add origin <your-repo-url>
+   git branch -M main
+   git push -u origin main
+   ```
+
+2. **Add your L2L key as a GitHub Actions secret** (never committed to the
+   repo): repo **Settings -> Secrets and variables -> Actions -> New
+   repository secret**, name it `L2L_API_KEY`, paste your real key.
+
+3. **Run the refresh once manually** to create `data/` for the first
+   time: **Actions** tab -> **Refresh L2L trending data** -> **Run
+   workflow**. It takes a minute or two; when it finishes, check that a
+   new commit ("Refresh trending data...") appears with a `data/` folder
+   in it.
+
+4. **Enable GitHub Pages**: **Settings -> Pages** -> Source: **Deploy from
+   a branch** -> branch `main`, folder `/ (root)`. Save, wait about a
+   minute for the URL to appear.
+
+5. **Open the Pages URL** + `/dashboard.html`, e.g.
+   `https://<you>.github.io/<repo>/dashboard.html`. That's it -- it reads
+   `data/` directly from the same site, nothing to configure.
+
+From here, the workflow keeps `data/` refreshed automatically every 30
+minutes on its own. If the dashboard ever looks stale, check the
+**Actions** tab for failed runs before assuming something's broken in the
+dashboard itself.
+
+## Local development
+
+To test against the exact static files that'll ship to GitHub Pages:
 
 ```bash
-cd backend
-pip install -r requirements.txt
-cp .env.example .env      # then edit .env and put your real L2L_API_KEY in it
-cd ..
-uvicorn backend.main:app --reload --port 8000
+pip install -r backend/requirements.txt
+export L2L_API_KEY=your-real-key
+python3 scripts/refresh_data.py      # writes data/*.json locally
+python3 -m http.server 8000          # serve this folder
+# open http://localhost:8000/dashboard.html
 ```
 
-(Run `uvicorn` from this directory, one level *above* `backend/` -- not
-from inside `backend/`. `main.py` works either way now, but running it as
-`backend.main` from here is the more standard way to launch a FastAPI
-app laid out as a package.)
-
-Then open `dashboard.html` in a browser (double-click it, or serve it with
-any static file server). It talks to `http://localhost:8000` by default.
-If your backend is somewhere else, you don't need to edit the file: click
-the &#9881; (settings) button in the top bar and paste the real address --
-it's remembered on that browser from then on. (You can also permanently
-change the default for everyone by editing `DEFAULT_API_BASE` near the top
-of the `<script>` block, or hand someone a link like
-`dashboard.html?api=https://your-backend-url` to set it for them automatically.)
-
-Run the tests any time you change the backend:
+Run the tests any time you touch `backend/`:
 
 ```bash
 pip install pytest anyio httpx
-pytest backend/test_api.py -v
+pytest backend/ -v
 ```
 
-## Deploying so it works for everyone (not just your machine)
+## Alternative: a live backend instead of scheduled snapshots
 
-Right now, whoever runs `uvicorn` is the only person who can use the
-dashboard -- it's only reachable from that machine. To make it work for
-everyone, two things need to each live somewhere that's always on:
+If a 15-30 minute refresh lag is a real problem and you want on-demand,
+always-current data instead, the original live FastAPI backend is still
+here and still works:
 
-**1. Put the code on GitHub** (you'll point both of the next two steps at it):
+- Locally: `uvicorn backend.main:app --reload --port 8000`
+- Deployed: `render.yaml` is a Render Blueprint (New -> Blueprint -> pick
+  this repo -> it asks for `L2L_API_KEY`); `Procfile` works the same way
+  on Railway or similar buildpack hosts. Render's free tier sleeps after
+  inactivity and takes ~30-60s to wake up on the first request.
 
-```bash
-cd l2l-trending-dashboard
-git init
-git add .
-git status              # confirm .env is NOT listed -- only .env.example should be
-git commit -m "Initial commit: L2L trending dashboard"
-git remote add origin <your-repo-url>
-git branch -M main
-git push -u origin main
-```
+Then open the dashboard with `?live=<backend-url>` appended, e.g.
+`dashboard.html?live=https://your-backend.onrender.com`. This is a
+per-visit override (not a saved setting), meant for testing one backend
+against the dashboard -- it does not change what anyone else sees when
+they open the plain URL. If you want live mode to be the default for
+everyone, that's a small code change (swap which branch `refresh()` takes
+in `dashboard.html`) -- ask if you want that instead of the static setup.
 
-`.env` is excluded by `.gitignore` and was never generated in this
-download, so there's nothing to accidentally leak here -- just never
-`git add -f` it later.
+## Why a 30-minute schedule doesn't hammer L2L's API
 
-**2. Deploy the backend somewhere that stays running.** A `render.yaml` is
-included so this is close to one-click on [Render](https://render.com)
-(free tier): New -> Blueprint -> pick this GitHub repo -> Render reads
-`render.yaml` and asks you to paste in `L2L_API_KEY` (kept as a secret,
-never committed). When it finishes you'll have a permanent URL like
-`https://l2l-trending-api.onrender.com`. (A `Procfile` is also included if
-you'd rather use Railway or another buildpack-based host instead.)
+A naive "refetch everything every 30 minutes" would mean roughly 900 L2L
+calls per run (6 lines x 120 days of daily data, plus weekly) -- most of
+it re-fetching numbers that haven't changed since the last run.
+`backend/rolling.py` avoids that: each run loads the previously-saved
+`data/trending-*.json`, and only fetches (a) periods that are newly in
+range since last time, and (b) a short "tail" of the most recent 2-3
+periods, which may still be updating (today's numbers, this week's
+numbers). Everything older is reused verbatim. In testing, a same-day
+re-run costs about 30 calls total instead of 900. `scripts/refresh_data.py`
+controls the window size (`DAY_WINDOW_DAYS`, `WEEK_WINDOW_DAYS`) and tail
+length (`DAY_TAIL_PERIODS`, `WEEK_TAIL_PERIODS`) if you want to tune either.
 
-Free-tier note: Render's free web services spin down after periods of
-inactivity and take ~30-60 seconds to wake back up on the next request --
-fine for an internal tool, worth knowing so the first load of the day
-isn't mistaken for it being broken. Paid tiers avoid that.
+## Data files (what `dashboard.html` actually reads)
 
-**3. Host `dashboard.html` somewhere everyone can open it.** Easiest
-option since the code's already on GitHub: repo Settings -> Pages ->
-Deploy from a branch -> `main` / `(root)`. You'll get a URL like
-`https://<you>.github.io/<repo>/dashboard.html`.
+- `data/lines.json` -- the configured line codes (BP-LINE1..6).
+- `data/metrics-day.json`, `data/metrics-week.json` -- the metric
+  catalog: id, label, category, unit, decimals, higher_is_better, which
+  granularities it applies to. The dashboard builds its tile grid
+  entirely from this, so a new L2L field shows up automatically
+  (auto-labeled) instead of being silently dropped.
+- `data/trending-day.json`, `data/trending-week.json` -- the rolling
+  window itself: `{ granularity, start_date, end_date, generated_at,
+  lines, series: { "BP-LINE1": [...], ..., "ALL_LINES": [...] }, errors }`.
+  The dashboard fetches each of these once per granularity and filters
+  them client-side to whatever date range you pick -- changing dates
+  never triggers a new network request.
 
-**4. Point the dashboard at the deployed backend.** Edit `DEFAULT_API_BASE`
-near the top of `dashboard.html`'s `<script>` block to the Render URL from
-step 2, commit, and push -- GitHub Pages picks it up automatically. Now
-anyone who opens the Pages URL gets a working dashboard with no setup on
-their end.
-
-**5. Tighten CORS.** In Render's environment variables, set
-`CORS_ALLOW_ORIGINS` to your actual GitHub Pages origin (e.g.
-`https://<you>.github.io`) instead of leaving it at `*`, so the API only
-answers requests from your dashboard.
-
-After that, GitHub involvement is done -- it hosted the code, Render runs
-the backend continuously, and GitHub Pages serves the page. Nothing about
-this needs a terminal open on anyone's machine anymore.
-
-## API
-
-- `GET /api/lines` -- the configured line codes (BP-LINE1..6).
-- `GET /api/metrics?granularity=day|week` -- the metric catalog: id,
-  label, category, unit, decimals, higher_is_better, which
-  granularities it's available in. The dashboard builds its tile grid
-  entirely from this, so if L2L starts returning a new field, it shows
-  up automatically (auto-labeled) instead of being silently dropped.
-- `GET /api/trending?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD&granularity=day|week&linecodes=BP-LINE1,BP-LINE2`
-  -- trending series. Omit `linecodes` to get all 6 lines plus a
-  `Plant Total` (ALL_LINES) series that combines them.
+(The live backend's `GET /api/lines`, `/api/metrics`, `/api/trending`
+endpoints return the same shapes, for the `?live=` path above.)
 
 ## Notable design decisions
 
@@ -124,26 +146,37 @@ this needs a terminal open on anyone's machine anymore.
   approximation, not a claim that it reproduces L2L's own OEE formula
   bit-for-bit -- worth keeping in mind if you ever reconcile against a
   report pulled straight from L2L's UI.
-- **7-day API window respected.** Both weekly and daily trending loop one
-  L2L call per line per period (matching how your original script pulled
-  weekly data), run concurrently, and are cached briefly so re-opening a
-  tile doesn't refetch. Fully-elapsed periods are cached much longer than
-  the current/in-progress one.
+- **Incremental rolling refresh**, see above -- the whole reason a
+  schedule this frequent is practical at all.
 - **No external dependencies in the dashboard.** The chart, tooltip,
   crosshair, and sparklines are hand-rolled SVG/JS rather than pulled from
-  a CDN, since this is meant to run on a production-floor kiosk that may
-  not have reliable internet access.
-- **Security note:** the L2L API key now lives only in `backend/.env`
-  (gitignore it), read server-side -- it's never sent to the browser. Keep
-  it that way; don't move it back into client-side JS.
+  a CDN, since this may end up running on a production-floor kiosk that
+  can't rely on outside internet access.
+- **Security note:** the L2L API key lives only as a GitHub Actions
+  secret (or in `backend/.env` locally, gitignored) -- it's read
+  server-side by the refresh script or the live backend, never sent to
+  the browser.
 
 ## Known gaps / things to revisit
 
 - The daily-record aggregation's weighted-average approach is an
   approximation (see above) -- validate it against a report you trust if
   the numbers need to be audit-grade.
-- CORS is wide open (`*`) by default for easy local testing; tighten
-  `CORS_ALLOW_ORIGINS` in `.env` once you know where the dashboard will
-  actually be hosted.
-- There's no auth on the FastAPI service itself -- fine on a trusted
-  internal network, not fine if it's ever exposed more broadly.
+- **Repo size grows slowly over time.** Every refresh that finds new data
+  commits an updated `data/trending-*.json` (a few hundred KB). Git
+  compresses this well, but if the repo's history size ever bothers you,
+  periodically squashing history (or dropping `data/` from history and
+  keeping only the latest commit) is a reasonable cleanup -- the files are
+  regenerated from L2L, not something you need history for.
+- **GitHub Actions schedules can slip.** GitHub explicitly reserves the
+  right to delay scheduled runs under load, and disables a schedule
+  entirely if the repo sees no other activity for 60 days. If the
+  dashboard looks stale, check the Actions tab and use "Run workflow" to
+  fire it manually.
+- Switching everyone to live mode by default (instead of `?live=` being a
+  per-visit opt-in) is a small, deliberate code change, not a runtime
+  setting -- see the "Alternative" section above.
+- There's no auth on the live FastAPI service, if you do deploy it --
+  fine on a trusted internal network, not fine if it's ever exposed more
+  broadly. `CORS_ALLOW_ORIGINS` in Render's environment variables should
+  be narrowed to your actual Pages origin.

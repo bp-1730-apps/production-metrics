@@ -287,7 +287,6 @@
         </div>
         <button class="icon-btn" id="refreshBtn" title="Refresh" aria-label="Refresh">&#8635;</button>
         <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle light/dark theme">&#9788;</button>
-        <button class="icon-btn" id="apiSettingsBtn" title="API connection settings" aria-label="API connection settings">&#9881;</button>
       </div>
     </div>
   </header>
@@ -322,40 +321,23 @@
   "use strict";
 
   /* ============================= Config ============================= */
-  // Set this to wherever you deployed backend/ (Render/Railway/your own
-  // server) once, before publishing this file -- everyone who opens the
-  // page uses this address by default.
-  const DEFAULT_API_BASE = "http://localhost:8000";
-
-  function resolveApiBase() {
-    // 1) ?api=... in the URL always wins, and is remembered on this
-    //    browser for next time -- useful for pointing one device at a
-    //    different backend without editing the file everyone else uses.
+  // By default this page reads the static data/*.json files (relative to
+  // wherever this HTML file itself is served from) -- the ones
+  // scripts/refresh_data.py writes and a scheduled GitHub Action keeps
+  // fresh. No backend needs to be running anywhere for that.
+  //
+  // For local development against a live backend instead (e.g. one you
+  // started with `uvicorn backend.main:app`), open this file with
+  // ?live=http://localhost:8000 appended to the URL. That's a per-load
+  // override, not a persisted setting -- meant for testing, not for what
+  // gets published.
+  const LIVE_API_BASE = (() => {
     try {
-      const fromQuery = new URLSearchParams(window.location.search).get("api");
-      if (fromQuery) {
-        localStorage.setItem("l2l_api_base_override", fromQuery);
-        return fromQuery.replace(/\/$/, "");
-      }
-    } catch (e) { /* fall through if URL parsing/storage is unavailable */ }
-
-    // 2) A previously-set override remembered on this browser.
-    try {
-      const stored = localStorage.getItem("l2l_api_base_override");
-      if (stored) return stored.replace(/\/$/, "");
-    } catch (e) { /* storage may be unavailable, e.g. private browsing */ }
-
-    // 3) The default baked into this file.
-    return DEFAULT_API_BASE.replace(/\/$/, "");
-  }
-
-  function clearApiBaseOverride() {
-    try { localStorage.removeItem("l2l_api_base_override"); } catch (e) { /* ignore */ }
-  }
-
-  const CONFIG = {
-    API_BASE: resolveApiBase(),
-  };
+      const fromQuery = new URLSearchParams(window.location.search).get("live");
+      return fromQuery ? fromQuery.replace(/\/$/, "") : null;
+    } catch (e) { return null; }
+  })();
+  const LIVE_MODE = !!LIVE_API_BASE;
 
   const LINES = ["BP-LINE1", "BP-LINE2", "BP-LINE3", "BP-LINE4", "BP-LINE5", "BP-LINE6"];
   const SERIES_COLOR_VARS = {
@@ -383,7 +365,8 @@
     startDate: null,
     endDate: null,
     metrics: [],          // catalog for current granularity
-    trending: null,       // last /api/trending response
+    trending: null,       // current data, filtered to the selected date range
+    fullTrendingCache: {},// { day: <full rolling-window payload>, week: <...> } -- fetched once per granularity
     loading: false,
     apiReachable: true,
     theme: null,           // null = follow system; "light" | "dark" = manual override (session only)
@@ -461,15 +444,17 @@
   const els = {};
   function cacheEls() {
     [
-      "granularityToggle", "presetSelect", "startDate", "endDate", "refreshBtn", "themeBtn", "apiSettingsBtn",
+      "granularityToggle", "presetSelect", "startDate", "endDate", "refreshBtn", "themeBtn",
       "statusBanner", "tileContainer", "emptyState", "rangeSubtitle",
       "modalBackdrop", "modalTitle", "modalCategory", "modalClose", "modalContent", "compareRow",
     ].forEach((id) => (els[id] = document.getElementById(id)));
   }
 
-  /* ============================= API ============================= */
-  async function fetchJSON(path, params) {
-    const url = new URL(CONFIG.API_BASE.replace(/\/$/, "") + path);
+  /* ============================= Data loading ============================= */
+  // Live mode (?live=<url>): calls a running backend's /api/* endpoints,
+  // same as this dashboard originally worked -- useful for local dev.
+  async function fetchLiveJSON(path, params) {
+    const url = new URL(LIVE_API_BASE + path);
     if (params) Object.entries(params).forEach(([k, v]) => v !== undefined && v !== null && url.searchParams.set(k, v));
     const res = await fetch(url.toString());
     if (!res.ok) {
@@ -479,16 +464,60 @@
     return res.json();
   }
 
-  async function loadMetricsCatalog() {
-    state.metrics = await fetchJSON("/api/metrics", { granularity: state.granularity });
+  async function loadMetricsCatalogLive() {
+    state.metrics = await fetchLiveJSON("/api/metrics", { granularity: state.granularity });
   }
 
-  async function loadTrending() {
-    state.trending = await fetchJSON("/api/trending", {
+  async function loadTrendingLive() {
+    state.trending = await fetchLiveJSON("/api/trending", {
       start_date: toISO(state.startDate),
       end_date: toISO(state.endDate),
       granularity: state.granularity,
     });
+  }
+
+  // Static mode (default): reads the pre-built data/*.json files. These
+  // cover a wide rolling window (see scripts/refresh_data.py), so we fetch
+  // each granularity's file once and filter it client-side to whatever
+  // date range the user picks -- no network call needed just to change dates.
+  async function fetchStaticJSON(relativePath) {
+    const res = await fetch(relativePath, { cache: "no-cache" });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText} fetching ${relativePath}`);
+    }
+    return res.json();
+  }
+
+  async function loadFullTrendingStatic(granularity) {
+    if (state.fullTrendingCache[granularity]) return state.fullTrendingCache[granularity];
+    const full = await fetchStaticJSON(`data/trending-${granularity}.json`);
+    state.fullTrendingCache[granularity] = full;
+    return full;
+  }
+
+  function filterTrendingToRange(full, startISO, endISO) {
+    const series = {};
+    Object.entries(full.series || {}).forEach(([key, rows]) => {
+      series[key] = rows.filter((r) => r.period_start >= startISO && r.period_start <= endISO);
+    });
+    return { ...full, series, start_date: startISO, end_date: endISO };
+  }
+
+  // Keeps the date pickers from wandering outside what's actually in the
+  // precomputed window -- picking a date with no data would otherwise just
+  // look like a bug ("no data in this range" on every tile).
+  function clampDateRangeToAvailable(full) {
+    if (!full.start_date || !full.end_date) return;
+    const availableStart = fromISO(full.start_date);
+    const availableEnd = fromISO(full.end_date);
+    els.startDate.min = full.start_date;
+    els.startDate.max = full.end_date;
+    els.endDate.min = full.start_date;
+    els.endDate.max = full.end_date;
+    if (state.startDate < availableStart) state.startDate = availableStart;
+    if (state.endDate > availableEnd) state.endDate = availableEnd;
+    els.startDate.value = toISO(state.startDate);
+    els.endDate.value = toISO(state.endDate);
   }
 
   function showBanner(message) {
@@ -814,6 +843,15 @@
   }
 
   /* ============================= Load + refresh cycle ============================= */
+  function freshnessSuffix(full) {
+    if (!full || !full.generated_at) return "";
+    try {
+      const generated = new Date(full.generated_at);
+      const stamp = generated.toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+      return ` · data as of ${stamp}`;
+    } catch (e) { return ""; }
+  }
+
   async function refresh() {
     if (state.loading) return;
     state.loading = true;
@@ -821,19 +859,39 @@
     els.rangeSubtitle.textContent = "Loading…";
     renderSkeleton();
     try {
-      await Promise.all([loadMetricsCatalog(), loadTrending()]);
+      let errCount = 0;
+      let freshness = "";
+      if (LIVE_MODE) {
+        await Promise.all([loadMetricsCatalogLive(), loadTrendingLive()]);
+        errCount = Object.values(state.trending.errors || {}).reduce((n, arr) => n + arr.length, 0);
+      } else {
+        const [metricsCatalog, full] = await Promise.all([
+          fetchStaticJSON(`data/metrics-${state.granularity}.json`),
+          loadFullTrendingStatic(state.granularity),
+        ]);
+        state.metrics = metricsCatalog;
+        clampDateRangeToAvailable(full);
+        state.trending = filterTrendingToRange(full, toISO(state.startDate), toISO(state.endDate));
+        errCount = Object.values(full.errors || {}).reduce((n, arr) => n + arr.length, 0);
+        freshness = freshnessSuffix(full);
+      }
+
       state.apiReachable = true;
-      els.rangeSubtitle.textContent = `${fmtLong(state.startDate)} — ${fmtLong(state.endDate)} · ${state.granularity === "day" ? "Daily" : "Weekly"} · All lines`;
-      const errCount = Object.values(state.trending.errors || {}).reduce((n, arr) => n + arr.length, 0);
+      const modeLabel = LIVE_MODE ? " · live" : "";
+      els.rangeSubtitle.textContent = `${fmtLong(state.startDate)} — ${fmtLong(state.endDate)} · ${state.granularity === "day" ? "Daily" : "Weekly"} · All lines${modeLabel}${freshness}`;
       if (errCount) {
-        showBanner(`L2L returned errors for ${errCount} period(s)/line(s) in this range. Values for those periods are omitted.`);
+        showBanner(`L2L returned errors for ${errCount} period(s)/line(s) during the last refresh. Those points show as gaps rather than wrong numbers.`);
       }
       renderTiles();
       if (state.modal.open) renderModal();
     } catch (err) {
       state.apiReachable = false;
       els.rangeSubtitle.textContent = "Unable to load data";
-      showBanner(`Can't reach the trending API at <code>${CONFIG.API_BASE}</code>. If that's not the right address, click the <strong>&#9881;</strong> button in the top bar to point this page at the right one -- no file edit needed. Otherwise, make sure the backend is actually running there.<br><span style="opacity:.7">${err.message}</span>`);
+      if (LIVE_MODE) {
+        showBanner(`Can't reach the live API at <code>${LIVE_API_BASE}</code>. Make sure that backend is running and reachable.<br><span style="opacity:.7">${err.message}</span>`);
+      } else {
+        showBanner(`Can't load <code>data/${state.granularity === "day" ? "trending-day" : "trending-week"}.json</code>. If you opened this file directly (a <code>file://</code> URL) rather than through a web server, that's expected -- browsers block this kind of fetch from local files. Serve it over http(s) instead (this is exactly what GitHub Pages does once published), or run <code>python3 -m http.server</code> in this folder for local testing.<br><span style="opacity:.7">${err.message}</span>`);
+      }
       els.tileContainer.innerHTML = "";
     } finally {
       state.loading = false;
@@ -878,21 +936,6 @@
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
       if (state.trending) { renderTiles(); if (state.modal.open) renderModal(); }
-    });
-
-    els.apiSettingsBtn.addEventListener("click", () => {
-      const current = CONFIG.API_BASE;
-      const next = window.prompt(
-        "Address of the trending API backend (leave blank to reset to this page's built-in default):",
-        current
-      );
-      if (next === null) return; // cancelled
-      if (next.trim() === "") {
-        clearApiBaseOverride();
-      } else {
-        try { localStorage.setItem("l2l_api_base_override", next.trim()); } catch (e) { /* ignore */ }
-      }
-      window.location.reload();
     });
 
     els.modalClose.addEventListener("click", closeModal);
