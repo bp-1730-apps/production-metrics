@@ -25,9 +25,14 @@ def _require_env(name: str) -> str:
     return value
 
 
-L2L_BASE_URL = os.environ.get("L2L_BASE_URL", "https://lakeviewfarms.leading2lean.com/api/1.0")
+# `or default` rather than `.get(name, default)`: a GitHub Actions secret
+# referenced in a workflow's `env:` block that doesn't exist evaluates to an
+# empty string, not "unset" -- os.environ would then contain the key with
+# value "", which `.get(name, default)` treats as present and returns as-is
+# (breaking int() below). `or` correctly falls through on empty string too.
+L2L_BASE_URL = os.environ.get("L2L_BASE_URL") or "https://lakeviewfarms.leading2lean.com/api/1.0"
 L2L_API_KEY = _require_env("L2L_API_KEY")
-L2L_SITE_NUMBER = int(os.environ.get("L2L_SITE_NUMBER", "2"))
+L2L_SITE_NUMBER = int(os.environ.get("L2L_SITE_NUMBER") or "2")
 
 # code -> L2L linecode
 LINECODE_DICT = {
@@ -43,11 +48,11 @@ LINECODE_DICT = {
 # A period that has fully elapsed (e.g. last week, yesterday) is cached
 # much longer than the current/in-progress period, since only the latter
 # still changes as new production data comes in.
-CACHE_TTL_CURRENT_SECONDS = int(os.environ.get("CACHE_TTL_CURRENT_SECONDS", "120"))
-CACHE_TTL_HISTORICAL_SECONDS = int(os.environ.get("CACHE_TTL_HISTORICAL_SECONDS", "21600"))  # 6h
+CACHE_TTL_CURRENT_SECONDS = int(os.environ.get("CACHE_TTL_CURRENT_SECONDS") or "120")
+CACHE_TTL_HISTORICAL_SECONDS = int(os.environ.get("CACHE_TTL_HISTORICAL_SECONDS") or "21600")  # 6h
 
 # CORS: restrict this in production to the origin the dashboard is served
 # from. "*" is convenient for local development only.
-CORS_ALLOW_ORIGINS = os.environ.get("CORS_ALLOW_ORIGINS", "*").split(",")
+CORS_ALLOW_ORIGINS = (os.environ.get("CORS_ALLOW_ORIGINS") or "*").split(",")
 
-MAX_CONCURRENT_L2L_REQUESTS = int(os.environ.get("MAX_CONCURRENT_L2L_REQUESTS", "8"))
+MAX_CONCURRENT_L2L_REQUESTS = int(os.environ.get("MAX_CONCURRENT_L2L_REQUESTS") or "8")
