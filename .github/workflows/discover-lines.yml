@@ -1,0 +1,33 @@
+name: Discover real L2L site/line codes
+
+# Manual-only diagnostic: prints your L2L account's real site codes and
+# line codes to this run's log, using the same L2L_API_KEY secret the
+# refresh-data workflow already uses. Use this to find the correct values
+# for backend/config.py's L2L_SITE_NUMBER and LINECODE_DICT instead of
+# guessing them by hand -- see scripts/discover_lines.py and the README's
+# "Troubleshooting" section for why this matters.
+#
+# Never runs on a schedule and makes no commits -- it only reads and prints.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Print real sites and lines from L2L
+        env:
+          L2L_API_KEY: ${{ secrets.L2L_API_KEY }}
+          L2L_SITE_NUMBER: ${{ secrets.L2L_SITE_NUMBER }}
+          L2L_BASE_URL: ${{ secrets.L2L_BASE_URL }}
+        run: python3 scripts/discover_lines.py
