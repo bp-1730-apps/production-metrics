@@ -145,3 +145,46 @@ async def test_existing_row_reused_without_refetch_outside_tail(monkeypatch):
     assert call_count["n"] == 1
     non_tail_values = [row["metrics"]["oee"] for row in result["series"]["BP-LINE1"][:-1]]
     assert all(v == 42.0 for v in non_tail_values)
+
+
+def make_empty_row(period_start: date):
+    return {"period_start": period_start.isoformat(), "period_end": period_start.isoformat(), "metrics": {}}
+
+
+@pytest.mark.anyio
+async def test_periods_with_empty_metrics_are_retried_every_run(monkeypatch):
+    """A period saved with no metrics (e.g. from a prior bug or a transient
+    L2L failure) must keep being retried on later runs, not get frozen as
+    permanently empty just because it already exists in the saved window."""
+    existing = {
+        "start_date": "2026-09-10",
+        "series": {
+            # All 8 periods previously failed and were saved as empty.
+            "BP-LINE1": [make_empty_row(date(2026, 9, 10) + timedelta(days=i)) for i in range(8)],
+        },
+    }
+
+    call_count = {"n": 0}
+
+    async def fake_fetch_one_period(linecode, period_start, granularity):
+        call_count["n"] += 1
+        return make_row(period_start, 7.0)  # now succeeds with real data
+
+    monkeypatch.setattr(trending, "_fetch_one_period", fake_fetch_one_period)
+
+    import backend.rolling as rolling_mod
+
+    class FixedDate(date):
+        @classmethod
+        def today(cls):
+            return date(2026, 9, 17)  # same as existing's last period -- nothing "new"
+
+    monkeypatch.setattr(rolling_mod, "date", FixedDate)
+
+    result = await rolling.update_rolling_series(
+        existing=existing, line_pairs=[("BP-LINE1", "2A")], granularity="day",
+        window_days=7, tail_periods=1,
+    )
+    # Every previously-empty period should have been retried, not just the tail.
+    assert call_count["n"] == 8
+    assert all(row["metrics"]["oee"] == 7.0 for row in result["series"]["BP-LINE1"])
