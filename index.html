@@ -18,12 +18,12 @@
     --border:         rgba(11,11,11,0.10);
     --border-strong:  rgba(11,11,11,0.16);
 
-    --series-1: #2a78d6; /* blue    - Plant Total / BP-LINE1 */
-    --series-2: #eb6834; /* orange  - BP-LINE2 */
-    --series-3: #1baf7a; /* aqua    - BP-LINE3 */
-    --series-4: #eda100; /* yellow  - BP-LINE4 */
-    --series-5: #e87ba4; /* magenta - BP-LINE5 */
-    --series-6: #008300; /* green   - BP-LINE6 */
+    --series-1: #2a78d6; /* blue    - Plant Total / BP-LINE1 (2A) */
+    --series-2: #eb6834; /* orange  - BP-LINE2 (PXM6) */
+    --series-3: #1baf7a; /* aqua    - BP-LINE3 (MP4) */
+    --series-4: #eda100; /* yellow  - BP-LINE4 (PL1) */
+    --series-5: #e87ba4; /* magenta - BP-LINE5 (PL2) */
+    --series-6: #008300; /* green   - BP-LINE6 (2E) */
 
     --status-good:     #0ca30c;
     --status-critical: #d03b3b;
@@ -339,6 +339,12 @@
   })();
   const LIVE_MODE = !!LIVE_API_BASE;
 
+  // LINES holds the internal ids used everywhere data is looked up (they
+  // must match data/*.json's series keys exactly). SERIES_LABELS is the
+  // only thing that controls what's actually shown on screen -- chips,
+  // legend, and table headers all read from it (see renderModal/
+  // renderTable below), so the plant-floor area name can differ from the
+  // internal id without touching anything else.
   const LINES = ["BP-LINE1", "BP-LINE2", "BP-LINE3", "BP-LINE4", "BP-LINE5", "BP-LINE6"];
   const SERIES_COLOR_VARS = {
     ALL_LINES: "--series-1",
@@ -349,8 +355,15 @@
     "BP-LINE5": "--series-6",
     "BP-LINE6": "--series-1",
   };
-  const SERIES_LABELS = { ALL_LINES: "Plant Total" };
-  LINES.forEach((l) => (SERIES_LABELS[l] = l));
+  const SERIES_LABELS = {
+    ALL_LINES: "Plant Total",
+    "BP-LINE1": "2A",
+    "BP-LINE2": "PXM6",
+    "BP-LINE3": "MP4",
+    "BP-LINE4": "PL1",
+    "BP-LINE5": "PL2",
+    "BP-LINE6": "2E",
+  };
 
   function cssVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
