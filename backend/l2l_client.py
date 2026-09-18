@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Optional
 
 import httpx
@@ -90,6 +90,35 @@ async def get_l2l_data(path: str, extra_params: dict) -> dict:
     return reply
 
 
+async def list_all(path: str, fields: str, extra_params: Optional[dict] = None) -> list[dict]:
+    """Paginate through one of L2L's generic, read-only master-data record
+    areas (e.g. sites/, lines/) using the limit/offset pattern documented
+    under "HTTP GET - View Records". Used by backend/directory.py to
+    resolve real site/line values instead of hardcoding guesses."""
+    out: list[dict] = []
+    offset = 0
+    limit = 200
+    while True:
+        params = {"limit": limit, "offset": offset, "fields": fields}
+        if extra_params:
+            params.update(extra_params)
+        reply = await get_l2l_data(path, params)
+        page = reply.get("data") or []
+        out.extend(page)
+        if len(page) < limit:
+            break
+        offset += limit
+    return out
+
+
+async def list_sites() -> list[dict]:
+    return await list_all("sites", "id,site,description,active")
+
+
+async def list_lines() -> list[dict]:
+    return await list_all("lines", "id,code,description,externalid,site,area,areacode,active")
+
+
 def _cache_ttl_for(period_end: date) -> int:
     """Historical (fully elapsed) periods are cached much longer than a
     period that includes today, since only the latter is still changing."""
@@ -98,9 +127,14 @@ def _cache_ttl_for(period_end: date) -> int:
     return config.CACHE_TTL_HISTORICAL_SECONDS
 
 
-async def weekly_summary(day: date, linecode: str) -> list[dict]:
-    """One row (list of len 0 or 1) for the L2L week containing `day`."""
-    cache_key = f"week:{linecode}:{day.isoformat()}"
+async def weekly_summary(day: date, linecode: str, site: int) -> list[dict]:
+    """One row (list of len 0 or 1) for the L2L week containing `day`.
+
+    `site` is the real L2L site code resolved by backend/directory.py
+    (or the L2L_SITE_NUMBER override) -- passed in explicitly rather than
+    read from config directly, since config no longer holds a single
+    trusted site number by itself (see config.py's SITE_HINTS docstring)."""
+    cache_key = f"week:{site}:{linecode}:{day.isoformat()}"
     cached = _cache.get(cache_key)
     if cached is not None:
         return cached
@@ -113,7 +147,7 @@ async def weekly_summary(day: date, linecode: str) -> list[dict]:
     # explicitly under "Reporting Method: Production: Weekly/Daily Summary
     # Data by Line".
     params = {
-        "site": config.L2L_SITE_NUMBER,
+        "site": site,
         "date": day.strftime("%Y-%m-%d %H:%M"),
         "linecode": linecode,
     }
@@ -129,21 +163,24 @@ async def weekly_summary(day: date, linecode: str) -> list[dict]:
         else:
             rows.append(item)
 
-    period_end = date.today()
-    if rows and rows[0].get("end_date"):
-        try:
-            period_end = datetime.fromisoformat(rows[0]["end_date"]).date()
-        except ValueError:
-            pass
-
+    # Per the real API docs' example payload, the weekly record has no
+    # "end_date" field to read back (an earlier version of this function
+    # assumed one, which meant this always fell through to date.today() and
+    # never got the long historical-cache TTL below). The week always runs
+    # 7 days from its start, so just compute it instead of guessing at a
+    # field that isn't there.
+    period_end = day + timedelta(days=6)
     _cache.set(cache_key, rows, _cache_ttl_for(period_end))
     return rows
 
 
-async def daily_summary(day: date, linecode: str) -> list[dict]:
+async def daily_summary(day: date, linecode: str, site: int) -> list[dict]:
     """All rows L2L returns for this line on this day (may be more than one
-    -- e.g. split by shift/product -- see metrics.aggregate_records)."""
-    cache_key = f"day:{linecode}:{day.isoformat()}"
+    -- e.g. split by shift/product -- see metrics.aggregate_records).
+
+    See weekly_summary()'s docstring for why `site` is passed in rather
+    than read from config directly."""
+    cache_key = f"day:{site}:{linecode}:{day.isoformat()}"
     cached = _cache.get(cache_key)
     if cached is not None:
         return cached
@@ -151,7 +188,7 @@ async def daily_summary(day: date, linecode: str) -> list[dict]:
     path = "reporting/production/daily_summary_data_by_line"
     period_end_exclusive = day + timedelta(days=1)
     params = {
-        "site": config.L2L_SITE_NUMBER,
+        "site": site,
         "start": day.strftime("%Y-%m-%d %H:%M"),
         "end": period_end_exclusive.strftime("%Y-%m-%d %H:%M"),
         "linecode": linecode,

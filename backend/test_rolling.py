@@ -32,7 +32,7 @@ def anyio_backend():
 async def test_first_run_fetches_every_period(monkeypatch):
     calls = []
 
-    async def fake_fetch_one_period(linecode, period_start, granularity):
+    async def fake_fetch_one_period(linecode, period_start, granularity, site):
         calls.append((linecode, period_start))
         return make_row(period_start, 50.0)
 
@@ -41,7 +41,7 @@ async def test_first_run_fetches_every_period(monkeypatch):
     today = date(2026, 9, 17)
     result = await rolling.update_rolling_series(
         existing=None, line_pairs=LINE_PAIRS, granularity="day",
-        window_days=5, tail_periods=1,
+        window_days=5, tail_periods=1, site=1730,
     )
     # window_days=5 -> 6 periods (inclusive stepping), x2 lines
     assert len(result["series"]["BP-LINE1"]) == 6
@@ -62,7 +62,7 @@ async def test_second_run_only_refetches_new_and_tail_periods(monkeypatch):
 
     calls = []
 
-    async def fake_fetch_one_period(linecode, period_start, granularity):
+    async def fake_fetch_one_period(linecode, period_start, granularity, site):
         calls.append((linecode, period_start))
         return make_row(period_start, 999.0)
 
@@ -81,7 +81,7 @@ async def test_second_run_only_refetches_new_and_tail_periods(monkeypatch):
 
     result = await rolling.update_rolling_series(
         existing=existing, line_pairs=LINE_PAIRS, granularity="day",
-        window_days=5, tail_periods=1,
+        window_days=5, tail_periods=1, site=1730,
     )
 
     # Only the new period (09-18) + the 1-period tail should have been
@@ -97,14 +97,14 @@ async def test_second_run_only_refetches_new_and_tail_periods(monkeypatch):
 
 @pytest.mark.anyio
 async def test_failed_fetch_with_no_prior_data_yields_placeholder(monkeypatch):
-    async def failing_fetch(linecode, period_start, granularity):
+    async def failing_fetch(linecode, period_start, granularity, site):
         raise RuntimeError("L2L unreachable")
 
     monkeypatch.setattr(trending, "_fetch_one_period", failing_fetch)
 
     result = await rolling.update_rolling_series(
         existing=None, line_pairs=[("BP-LINE1", "2A")], granularity="day",
-        window_days=2, tail_periods=1,
+        window_days=2, tail_periods=1, site=1730,
     )
     rows = result["series"]["BP-LINE1"]
     assert all(row["metrics"] == {} for row in rows)
@@ -122,7 +122,7 @@ async def test_existing_row_reused_without_refetch_outside_tail(monkeypatch):
 
     call_count = {"n": 0}
 
-    async def fake_fetch_one_period(linecode, period_start, granularity):
+    async def fake_fetch_one_period(linecode, period_start, granularity, site):
         call_count["n"] += 1
         return make_row(period_start, 1.0)
 
@@ -139,7 +139,7 @@ async def test_existing_row_reused_without_refetch_outside_tail(monkeypatch):
 
     result = await rolling.update_rolling_series(
         existing=existing, line_pairs=[("BP-LINE1", "2A")], granularity="day",
-        window_days=7, tail_periods=1,
+        window_days=7, tail_periods=1, site=1730,
     )
     # Only the 1 tail period should be refetched; the rest reused verbatim.
     assert call_count["n"] == 1
@@ -166,7 +166,7 @@ async def test_periods_with_empty_metrics_are_retried_every_run(monkeypatch):
 
     call_count = {"n": 0}
 
-    async def fake_fetch_one_period(linecode, period_start, granularity):
+    async def fake_fetch_one_period(linecode, period_start, granularity, site):
         call_count["n"] += 1
         return make_row(period_start, 7.0)  # now succeeds with real data
 
@@ -183,7 +183,7 @@ async def test_periods_with_empty_metrics_are_retried_every_run(monkeypatch):
 
     result = await rolling.update_rolling_series(
         existing=existing, line_pairs=[("BP-LINE1", "2A")], granularity="day",
-        window_days=7, tail_periods=1,
+        window_days=7, tail_periods=1, site=1730,
     )
     # Every previously-empty period should have been retried, not just the tail.
     assert call_count["n"] == 8

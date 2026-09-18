@@ -15,10 +15,39 @@ from fastapi.testclient import TestClient
 import os
 os.environ.setdefault("L2L_API_KEY", "test-key-not-real")
 
-from backend import l2l_client, metrics, trending  # noqa: E402
+from backend import directory, l2l_client, metrics, trending  # noqa: E402
+from backend import main as main_module  # noqa: E402
 from backend.main import app  # noqa: E402
 
 client = TestClient(app)
+
+
+@pytest.fixture
+def mock_resolution(monkeypatch):
+    """Bypass backend.directory's real L2L /sites//lines/ lookups for tests
+    that exercise the FastAPI app end-to-end -- these tests shouldn't
+    depend on real network access or a real API key, and should see a
+    fixed, known line mapping regardless of what any real L2L account
+    currently contains."""
+    mapping = {
+        "BP-LINE1": "2A", "BP-LINE2": "PXM6", "BP-LINE3": "MP4",
+        "BP-LINE4": "PL1", "BP-LINE5": "PL2", "BP-LINE6": "2E",
+    }
+
+    async def fake_resolve_site():
+        return directory.SiteResolution(site_code=1730, matched_description="Plant 1730 - Buena Park (test)")
+
+    async def fake_resolve_lines(site):
+        return {
+            dc: directory.LineResolution(dc, code, code, matched_description=f"{dc} (test)")
+            for dc, code in mapping.items()
+        }
+
+    monkeypatch.setattr(directory, "resolve_site", fake_resolve_site)
+    monkeypatch.setattr(directory, "resolve_lines", fake_resolve_lines)
+    main_module._cached_line_resolutions = None  # force re-resolution through the fakes above
+    yield mapping
+    main_module._cached_line_resolutions = None  # don't leak a mocked resolution into later tests
 
 WEEKLY_SAMPLE = {
     "area_id": 251, "line_id": 2642, "line_categories": None,
@@ -110,7 +139,7 @@ async def test_weekly_summary_client(monkeypatch):
         return {"success": True, "data": [WEEKLY_SAMPLE]}
 
     monkeypatch.setattr(l2l_client, "get_l2l_data", fake_get_l2l_data)
-    rows = await l2l_client.weekly_summary(date(2026, 9, 7), "2A")
+    rows = await l2l_client.weekly_summary(date(2026, 9, 7), "2A", 1730)
     assert len(rows) == 1
     assert rows[0]["average_oee"] == "59"
 
@@ -122,26 +151,26 @@ async def test_daily_summary_client_handles_multiple_rows(monkeypatch):
         return {"success": True, "data": [DAILY_SAMPLE, make_daily_variant({"shift": "Night Shift"})]}
 
     monkeypatch.setattr(l2l_client, "get_l2l_data", fake_get_l2l_data)
-    rows = await l2l_client.daily_summary(date(2026, 9, 7), "2E")
+    rows = await l2l_client.daily_summary(date(2026, 9, 7), "2E", 1730)
     assert len(rows) == 2
 
 
 @pytest.mark.anyio
 async def test_fetch_trending_multi_line_and_all_lines(monkeypatch):
-    async def fake_weekly(day, linecode):
+    async def fake_weekly(day, linecode, site):
         return [WEEKLY_SAMPLE]
 
     monkeypatch.setattr(l2l_client, "weekly_summary", fake_weekly)
     start = date(2026, 8, 24)
     end = date(2026, 9, 7)
-    result = await trending.fetch_trending(["2A", "2E"], start, end, "week")
+    result = await trending.fetch_trending(["2A", "2E"], start, end, "week", 1730)
     assert result["lines"] == ["2A", "2E"]
     assert len(result["series"]["2A"]) == 3  # 3 weekly periods in the range
     assert "ALL_LINES" in result["series"]
     assert result["series"]["ALL_LINES"][0]["metrics"]["actual"] == pytest.approx(49593 * 2)
 
 
-def test_l2l_error_surfaces_as_400_or_500(monkeypatch):
+def test_l2l_error_surfaces_as_400_or_500(monkeypatch, mock_resolution):
     async def failing_get_l2l_data(path, params):
         return {"success": False, "error": "auth failed"}
 
@@ -156,11 +185,13 @@ def test_l2l_error_surfaces_as_400_or_500(monkeypatch):
         assert any(body["errors"].values())
 
 
-def test_lines_and_metrics_endpoints():
+def test_lines_and_metrics_endpoints(mock_resolution):
     resp = client.get("/api/lines")
     assert resp.status_code == 200
-    codes = {row["code"] for row in resp.json()}
+    body = resp.json()
+    codes = {row["code"] for row in body}
     assert codes == {"BP-LINE1", "BP-LINE2", "BP-LINE3", "BP-LINE4", "BP-LINE5", "BP-LINE6"}
+    assert all(row["resolved"] for row in body)
 
     resp = client.get("/api/metrics", params={"granularity": "day"})
     assert resp.status_code == 200

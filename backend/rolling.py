@@ -54,6 +54,7 @@ async def update_rolling_series(
     granularity: str,
     window_days: int,
     tail_periods: int,
+    site: int,
 ) -> dict:
     step_days = 7 if granularity == "week" else 1
     max_periods = window_days // step_days + 1
@@ -92,7 +93,7 @@ async def update_rolling_series(
             return not existing_rows[iso].get("metrics")
 
         to_fetch = {
-            p: trending._fetch_one_period(l2l_code, p, granularity)
+            p: trending._fetch_one_period(l2l_code, p, granularity, site)
             for p in periods
             if _needs_fetch(p)
         }

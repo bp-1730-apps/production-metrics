@@ -2,12 +2,21 @@
 Canonical metric registry for L2L production-summary data.
 
 L2L's weekly and daily reporting endpoints return overlapping but not
-identical field sets, and one field (OEE) is even named differently
-between the two ("average_oee" on the weekly endpoint vs.
-"overall_equipment_effectiveness" on the daily endpoint). This module
-gives every metric a single stable ID so the rest of the API -- and the
-dashboard -- never has to know which raw field name a given granularity
-uses.
+identical field sets. The OEE rename ("average_oee" on weekly vs.
+"overall_equipment_effectiveness" on daily) is confirmed against this
+account's own real sample payloads (see test_api.py's WEEKLY_SAMPLE /
+DAILY_SAMPLE, captured from Plant 1730's L2L instance). L2L's own generic
+API documentation ("Reporting Method: Production: Weekly/Daily Summary
+Data by Line") independently confirms the same weekly/daily split, and
+additionally shows its illustrative weekly example naming the
+planned-production field "planned_production_downtime_minutes" instead of
+daily's "planned_production_minutes" -- this account's real weekly sample
+doesn't show that particular field at all, so it's unconfirmed here, but
+the alias below is harmless either way (it only fires if that exact raw
+key ever shows up) and cheap insurance against the docs' explicit warning
+that "fields available will increase over time." This module gives every
+metric a single stable ID so the rest of the API -- and the dashboard --
+never has to know which raw field name a given granularity uses.
 
 Fields that identify a record (line_id, product, shift, dates, etc.)
 rather than measure something are excluded from the metric registry.
@@ -24,6 +33,11 @@ from typing import Optional
 FIELD_ALIASES = {
     "average_oee": "oee",
     "overall_equipment_effectiveness": "oee",
+    # Weekly's documented example calls this "planned_production_downtime_
+    # minutes"; daily calls it "planned_production_minutes". Canonicalize
+    # to the daily name since that's the one already used throughout
+    # SUM_FIELDS/KNOWN_METRICS/aggregate_records' weighting.
+    "planned_production_downtime_minutes": "planned_production_minutes",
 }
 
 # --- Fields present in each raw payload that are identifiers/labels, not
@@ -32,7 +46,7 @@ NON_METRIC_FIELDS = {
     "area_id", "area", "line_id", "line", "line_categories",
     "product", "product_id", "product_category_id", "product_category_code",
     "products", "shift", "shift_id", "shifts", "shift_start", "site",
-    "start_date", "end_date",
+    "start_date", "end_date", "date",
 }
 
 

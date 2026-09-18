@@ -10,17 +10,21 @@
   and commits the result. This is what makes the dashboard "just work"
   for anyone who opens it, with no setup on their end. It won't exist
   until the first refresh runs (see setup below).
-- `backend/` -- the L2L client, field-normalization, and aggregation
-  logic. Used two ways: `scripts/refresh_data.py` imports it directly to
-  build `data/`, and it can optionally also run as a live FastAPI service
-  (`uvicorn backend.main:app`) for local development.
+- `backend/` -- the L2L client, site/line resolution, field-normalization,
+  and aggregation logic. Used two ways: `scripts/refresh_data.py` imports
+  it directly to build `data/`, and it can optionally also run as a live
+  FastAPI service (`uvicorn backend.main:app`) for local development.
+  `backend/directory.py` is what resolves `config.py`'s `SITE_HINTS`/
+  `LINE_HINTS` to real L2L values -- see the Troubleshooting section below.
 - `.github/workflows/refresh-data.yml` -- the scheduled job that keeps
-  `data/` fresh.
+  `data/` fresh. `.github/workflows/discover-lines.yml` is a separate,
+  manual-only, no-commit job for inspecting site/line resolution alone.
 - `render.yaml` / `Procfile` -- only needed for the *optional* live-backend
   path described near the bottom; skip them for the default setup.
-- `backend/test_api.py`, `backend/test_rolling.py` -- tests against the
-  sample payloads you provided and the incremental refresh logic, no real
-  network calls.
+- `backend/test_api.py`, `backend/test_rolling.py`, `backend/test_directory.py`
+  -- tests against the sample payloads you provided, the incremental
+  refresh logic, and the site/line hint-matching logic, no real network
+  calls.
 
 ## Setup (GitHub-only, no server to run)
 
@@ -61,17 +65,49 @@ minutes on its own. If the dashboard ever looks stale, check the
 **Actions** tab for failed runs before assuming something's broken in the
 dashboard itself.
 
-## Troubleshooting: "No lines found" / every line shows identical numbers
+## Troubleshooting: a line shows "no data" / identical numbers across lines
 
-Both mean the same underlying thing: `backend/config.py`'s `L2L_SITE_NUMBER`
-and/or `LINECODE_DICT` values don't match real records in your L2L account.
-"No lines found" is L2L's hard error when a *required* line filter matches
-nothing (the weekly endpoint); identical values across every line is what
-happens on the daily endpoint instead, since its line filter is optional --
-an unmatched value is silently ignored rather than rejected, so it quietly
-falls back to unfiltered, plant-wide totals for every "line" you ask for.
+As of this version, `backend/config.py` doesn't hardcode a fixed site
+number and per-line codes anymore -- it holds **hints** (`SITE_HINTS`,
+`LINE_HINTS`), and `backend/directory.py` resolves them against your real
+L2L account (via its `/sites/` and `/lines/` master-data endpoints) on
+every scheduled refresh, before fetching any trending data. This exists
+because a wrong hardcoded value used to fail in two different, confusing
+ways: "No lines found" is L2L's hard error when the weekly endpoint's
+*required* line filter matches nothing, while the daily endpoint's line
+filter is optional, so an unmatched value there is silently ignored and
+quietly falls back to unfiltered, plant-wide totals for every "line" you
+asked for -- indistinguishable from a real per-line reporting bug unless
+you already knew to suspect the linecode itself.
 
-Don't guess new values by hand -- ask L2L's own API which ones are real:
+**If a line shows "no data":** its hint didn't match anything in your
+account. Every scheduled refresh prints exactly what it resolved (and, for
+anything it couldn't, every real site/line your API key can actually see)
+directly to that run's own log -- **Actions** tab -> **Refresh L2L
+trending data** -> the most recent run -> its one job's log. The same
+information is also written into `data/lines.json` (per-line
+`resolved`/`matched_description`/`error`) and into `data/trending-*.json`'s
+`errors` field, which is what the dashboard's "N error(s) during the last
+refresh" banner is counting.
+
+To fix it, edit `backend/config.py`:
+
+- `SITE_HINTS` -- a comma-separated list of substrings matched against each
+  site's `description` (case-insensitive). Defaults to values that should
+  match a site named around "1730" / "Buena Park" / "Novus".
+- `LINE_HINTS` -- for each `BP-LINE1`..`6`, one or more comma-separated
+  hints tried in order. Each is tried first as an *exact* match against a
+  line's real `code`, then as a *substring* match against its
+  `description`, `externalid`, and `areacode` -- so a hint doesn't have to
+  be the exact code if you only know the line's name.
+
+Once a hint matches something real, use the *real* value shown in the log
+(not a guess) as the new hint -- an exact-code hint resolves fastest and
+most unambiguously.
+
+There's also a standalone, no-commit way to see the same thing without
+touching `data/`: **Actions** tab -> **Discover real L2L site/line codes**
+-> **Run workflow**, or locally:
 
 ```bash
 cd l2l-trending-dashboard
@@ -79,14 +115,9 @@ export L2L_API_KEY=your-real-key
 python3 scripts/discover_lines.py
 ```
 
-This prints every Site record your key can see (its real `site` code --
-that's what `L2L_SITE_NUMBER` should be) and every Line record (its real
-`code` field -- that's what `LINECODE_DICT`'s values should be), straight
-from L2L's `/sites/` and `/lines/` master-data endpoints. Match the site
-whose description looks like Plant 1730 / Buena Park, then match its six
-lines by description to BP-LINE1..6, and update `backend/config.py`
-accordingly (or set the `L2L_SITE_NUMBER` GitHub Actions secret if only the
-site number was wrong).
+If you already know the correct numeric site code, set the
+`L2L_SITE_NUMBER` GitHub Actions secret to it directly -- this skips site
+hint-matching entirely and is the most reliable option once you know it.
 
 ## Local development
 
@@ -143,7 +174,9 @@ length (`DAY_TAIL_PERIODS`, `WEEK_TAIL_PERIODS`) if you want to tune either.
 
 ## Data files (what `index.html` actually reads)
 
-- `data/lines.json` -- the configured line codes (BP-LINE1..6).
+- `data/lines.json` -- the configured line codes (BP-LINE1..6), plus
+  what each one resolved to that run: `l2l_linecode`, `resolved`,
+  `matched_description`, and `error` (see Troubleshooting above).
 - `data/metrics-day.json`, `data/metrics-week.json` -- the metric
   catalog: id, label, category, unit, decimals, higher_is_better, which
   granularities it applies to. The dashboard builds its tile grid

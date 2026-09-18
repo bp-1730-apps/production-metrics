@@ -33,13 +33,13 @@ def _period_starts(start: date, end: date, granularity: Granularity) -> list[dat
     return periods
 
 
-async def _fetch_one_period(linecode: str, period_start: date, granularity: Granularity) -> dict:
+async def _fetch_one_period(linecode: str, period_start: date, granularity: Granularity, site: int) -> dict:
     if granularity == "week":
-        rows = await l2l_client.weekly_summary(period_start, linecode)
+        rows = await l2l_client.weekly_summary(period_start, linecode, site)
         row = metrics.normalize_record(rows[0]) if rows else {}
         period_end = period_start + timedelta(days=6)
     else:
-        rows = await l2l_client.daily_summary(period_start, linecode)
+        rows = await l2l_client.daily_summary(period_start, linecode, site)
         normalized_rows = [metrics.normalize_record(r) for r in rows]
         row = metrics.aggregate_records(normalized_rows)
         period_end = period_start
@@ -51,10 +51,10 @@ async def _fetch_one_period(linecode: str, period_start: date, granularity: Gran
     }
 
 
-async def fetch_line_series(linecode: str, start: date, end: date, granularity: Granularity) -> dict:
+async def fetch_line_series(linecode: str, start: date, end: date, granularity: Granularity, site: int) -> dict:
     periods = _period_starts(start, end, granularity)
     results = await asyncio.gather(
-        *[_fetch_one_period(linecode, p, granularity) for p in periods],
+        *[_fetch_one_period(linecode, p, granularity, site) for p in periods],
         return_exceptions=True,
     )
 
@@ -82,10 +82,11 @@ async def fetch_trending(
     start: date,
     end: date,
     granularity: Granularity,
+    site: int,
     include_all_lines: bool = True,
 ) -> dict:
     per_line = await asyncio.gather(*[
-        fetch_line_series(lc, start, end, granularity) for lc in linecodes
+        fetch_line_series(lc, start, end, granularity, site) for lc in linecodes
     ])
 
     series_by_line = {r["linecode"]: r["series"] for r in per_line}
