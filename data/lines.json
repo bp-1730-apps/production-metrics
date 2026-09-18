@@ -1,26 +1,44 @@
 [
   {
     "code": "BP-LINE1",
-    "l2l_linecode": "2A"
+    "l2l_linecode": "BP-LINE1",
+    "resolved": true,
+    "matched_description": "BP-LINE1 2A",
+    "error": null
   },
   {
     "code": "BP-LINE2",
-    "l2l_linecode": "PXM6"
+    "l2l_linecode": "BP-LINE2",
+    "resolved": true,
+    "matched_description": "BP-LINE2 PXM6",
+    "error": null
   },
   {
     "code": "BP-LINE3",
-    "l2l_linecode": "MP4"
+    "l2l_linecode": "BP-LINE3",
+    "resolved": true,
+    "matched_description": "BP-LINE3 MP4",
+    "error": null
   },
   {
     "code": "BP-LINE4",
-    "l2l_linecode": "PL1"
+    "l2l_linecode": "BP-LINE4",
+    "resolved": true,
+    "matched_description": "BP-LINE4 PL1",
+    "error": null
   },
   {
     "code": "BP-LINE5",
-    "l2l_linecode": "PL2"
+    "l2l_linecode": "BP-LINE5",
+    "resolved": true,
+    "matched_description": "BP-LINE5 PL2",
+    "error": null
   },
   {
     "code": "BP-LINE6",
-    "l2l_linecode": "2E"
+    "l2l_linecode": "BP-LINE6",
+    "resolved": true,
+    "matched_description": "BP-LINE6 2E",
+    "error": null
   }
 ]
