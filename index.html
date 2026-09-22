@@ -155,6 +155,13 @@
   }
   .icon-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
 
+  .nav-link {
+    font-size: 12.5px; color: var(--text-secondary); text-decoration: none;
+    border: 1px solid var(--border); border-radius: var(--radius-md); padding: 7px 12px;
+    white-space: nowrap;
+  }
+  .nav-link:hover { border-color: var(--border-strong); color: var(--text-primary); }
+
   .status-banner {
     display: none; margin: 12px 20px 0; padding: 10px 14px;
     border-radius: var(--radius-md); font-size: 13px;
@@ -275,6 +282,7 @@
         <div class="subtitle" id="rangeSubtitle">Loading&hellip;</div>
       </div>
       <div class="controls">
+        <a class="nav-link" href="control-charts.html">Control Charts &rarr;</a>
         <div class="segmented" id="granularityToggle" role="tablist" aria-label="Granularity">
           <button data-value="day" class="active" role="tab" aria-selected="true">Day</button>
           <button data-value="week" role="tab" aria-selected="false">Week</button>

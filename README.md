@@ -5,6 +5,12 @@
 - `index.html` -- a single-file, dependency-free dashboard. By
   default it reads the static `data/*.json` files sitting next to it --
   no backend needs to be running anywhere for that.
+- `control-charts.html` -- a second single-file page, linked from
+  `index.html`'s header ("Control Charts ->") and linking back. Statistical
+  process control (SPC) charts -- X-bar/R, Individuals/Moving-Range (I-MR),
+  and p-charts with before/after re-evaluation phases -- built from the
+  exact same `data/*.json` (or live `/api/*`) this project already produces.
+  See "Control charts" below.
 - `data/` -- generated, not hand-written. `scripts/refresh_data.py`
   writes it; a scheduled GitHub Action runs that script every 30 minutes
   and commits the result. This is what makes the dashboard "just work"
@@ -191,6 +197,47 @@ length (`DAY_TAIL_PERIODS`, `WEEK_TAIL_PERIODS`) if you want to tune either.
 
 (The live backend's `GET /api/lines`, `/api/metrics`, `/api/trending`
 endpoints return the same shapes, for the `?live=` path above.)
+
+## Control charts (`control-charts.html`)
+
+A second page, adapted from a standalone SPC prototype someone had built
+around a manually-uploaded L2L "OEE by Day Trend" spreadsheet export. The
+statistical core is carried over essentially unchanged; only the
+data-ingestion layer is different -- it reads this project's own
+`data/trending-*.json` / `data/metrics-*.json` (or the live backend via
+`?live=`, same convention as `index.html`) instead of parsing an uploaded
+file, so there's nothing to export or upload -- it's already wired to the
+same 30-minute refresh as the tile dashboard.
+
+Two tabs:
+
+- **X-bar/R & I-MR Control Chart** -- pick any metric from the loaded
+  catalog (OEE, availability, yield, scrap %, actual production, etc.) and
+  a line. A single line plots as an Individuals/Moving-Range (I-MR) chart;
+  "All lines combined" plots as an X-bar/R chart, one subgroup per date
+  built from that date's per-line values (a date where fewer than 6 lines
+  reported just shrinks that day's subgroup rather than skewing the shared
+  control limits -- the constants-table lookup itself still uses the fixed
+  nominal subgroup size, 6, the standard simplification for this kind of
+  combined chart). Nelson rules 1-3 (a point beyond UCL/LCL; 9+ consecutive
+  points on one side of the centerline; 6+ consecutive points trending) are
+  evaluated and flagged directly on the chart, with an optional
+  user-defined target CL/UCL/LCL overlay for a spec or corporate goal.
+- **P-Chart & Process Change** -- a scrap-rate control chart. Sample size
+  (n) is each period's `actual` (Actual Production) field; defect count is
+  `scrap` -- both already part of the normal trending data, so no separate
+  defect log is needed. "All lines combined" sums actual and scrap across
+  every line per date (the `ALL_LINES` series). Add "re-evaluation points"
+  to split the range into before/after phases when investigating the
+  effect of a fix -- centerline, control limits (which vary point-to-point
+  since sample size does), and the Nelson rules all recompute independently
+  per phase, so a shift right at the change point isn't misread as a
+  violation of the old baseline.
+
+Both tabs share the same granularity/date-range controls as the tile
+dashboard at the top of the page. Nothing here changes `data/*.json`'s
+schema or `scripts/refresh_data.py` -- it's a second, read-only view over
+data the project already produces.
 
 ## Notable design decisions
 
